@@ -11,8 +11,7 @@
             <div class="icon icon-shape icon-sm bg-white text-center border-radius-md mb-3">
               <i class="ni ni-camera-compact text-dark opacity-10"></i>
             </div>
-            <h5 class="text-white mb-1">Get started with Argon</h5>
-            <p>There’s nothing I really wanted to do in life that I wasn’t able to get good at.</p>
+            <h5 class="text-white mb-1">Get started </h5>
           </div>
         </div>
         <div
@@ -24,8 +23,7 @@
             <div class="icon icon-shape icon-sm bg-white text-center border-radius-md mb-3">
               <i class="ni ni-bulb-61 text-dark opacity-10"></i>
             </div>
-            <h5 class="text-white mb-1">Faster way to create web pages</h5>
-            <p>That’s my skill. I’m not really specifically talented at anything except for the ability to learn.</p>
+ 
           </div>
         </div>
         <div
@@ -37,8 +35,7 @@
             <div class="icon icon-shape icon-sm bg-white text-center border-radius-md mb-3">
               <i class="ni ni-trophy text-dark opacity-10"></i>
             </div>
-            <h5 class="text-white mb-1">Share with us your design tips!</h5>
-            <p>Don’t be afraid to be wrong because you can’t learn anything from a compliment.</p>
+            
           </div>
         </div>
       </div>
