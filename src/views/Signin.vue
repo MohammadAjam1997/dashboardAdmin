@@ -26,43 +26,45 @@
                 <div class="card-body">
                   <form role="form">
                     <div class="mb-3">
-                      <argon-input
-                        type="email"
-                        placeholder="Email"
-                        name="email"
-                        size="lg"
+                      <input
+                        id="Name"
+                        v-model="Phone"
+                        class="form-control"
+                        type="text"
+                        placeholder="Name"
+                        aria-label="default input example"
                       />
                     </div>
                     <div class="mb-3">
-                      <argon-input
-                        type="password"
+                      <input
+                        id="Name"
+                        v-model="Password"
+                        class="form-control"
+                        type="text"
                         placeholder="Password"
-                        name="password"
-                        size="lg"
+                        aria-label="default input example"
                       />
+                      {{ Phone }}
                     </div>
                     <argon-switch id="rememberMe">Remember me</argon-switch>
 
                     <div class="text-center">
-                      <argon-button
-                        class="mt-4"
-                        variant="gradient"
-                        color="success"
-                        fullWidth
-                        size="lg"
-                        >Sign in</argon-button
-                      >
+                      <button @click="signIn()">Sign in</button>
                     </div>
                   </form>
                 </div>
                 <div class="px-1 pt-0 text-center card-footer px-lg-2">
                   <p class="mx-auto mb-4 text-sm">
                     Don't have an account?
-                    <router-link class="text-success" to="/signup"> Sign up</router-link>
+                    <router-link class="text-success" to="/signup">
+                      Sign up</router-link
+                    >
                   </p>
                 </div>
               </div>
             </div>
+            <button @click="signIn()">Sign in</button>
+
             <div
               class="top-0 my-auto text-center col-6 d-lg-flex d-none h-100 pe-0 position-absolute end-0 justify-content-center flex-column"
             >
@@ -94,18 +96,49 @@
 
 <script>
 import Navbar from "@/examples/PageLayout/Navbar.vue";
-import ArgonInput from "@/components/ArgonInput.vue";
 import ArgonSwitch from "@/components/ArgonSwitch.vue";
-import ArgonButton from "@/components/ArgonButton.vue";
+// import axios from "axios";
 const body = document.getElementsByTagName("body")[0];
 
 export default {
   name: "signin",
   components: {
     Navbar,
-    ArgonInput,
     ArgonSwitch,
-    ArgonButton,
+  },
+  data() {
+    return {
+      Phone: "",
+      Password: "",
+    };
+  },
+
+  methods: {
+    signIn() {
+      const data = { mobile: "963993744264", password: "08112" };
+
+      // axios
+      //   .post("http://15.237.7.54:8000/api/login/",h, data)
+      //   .then((res) => {
+      //     console.log(res);
+      //   });
+
+      fetch("http://15.237.7.54:8000/api/login/", {
+        method: "POST", // or 'PUT'
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Credentials": "true",
+        },
+        body: JSON.stringify(data),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          console.log("Success:", data);
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+        });
+    },
   },
   created() {
     this.$store.state.hideConfigButton = true;
