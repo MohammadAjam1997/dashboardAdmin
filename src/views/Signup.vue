@@ -50,6 +50,15 @@
                   placeholder="Phone"
                   aria-label="default input example"
                 />
+                <label for="email" class="form-label">Email</label>
+                <input
+                  id="email"
+                  v-model="email"
+                  class="form-control"
+                  type="email"
+                  placeholder="email"
+                  aria-label="default input example"
+                />
                 <label for="Password" class="form-label">Password</label>
                 <input
                   id="Password"
@@ -59,31 +68,71 @@
                   placeholder="Password"
                   aria-label="default input example"
                 />
-
-                <argon-checkbox checked class="pt-3">
-                  <label class="form-check-label" for="flexCheckDefault">
-                    I agree the
-                    <a href="javascript:;" class="text-dark font-weight-bolder"
-                      >Terms and Conditions</a
-                    >
-                  </label>
-                </argon-checkbox>
-                <div class="text-center">
-                  <argon-button
-                    fullWidth
-                    color="success"
-                    variant="gradient"
-                    class="my-4 mb-2"
-                    >Sign up</argon-button
-                  >
-                </div>
-                <p class="text-sm mt-3 mb-0">
-                  Already have an account?
-                  <router-link class="text-success" to="/signin">
-                    Sign in</router-link
-                  >
-                </p>
               </form>
+              <div class="text-center">
+                <button
+                  @click="signUp()"
+                  type="button"
+                  class="btn btn-dark my-4 mb-2"
+                >
+                  Sign up
+                </button>
+              </div>
+
+              <p class="text-sm mt-3 mb-0">
+                Already have an account?
+                <router-link class="text-success" to="/signin">
+                  Sign in</router-link
+                >
+              </p>
+            </div>
+          </div>
+          <!-- Button trigger modal -->
+          <button
+            type="button"
+            class="btn btn-primary"
+            id="myCheck"
+            data-bs-toggle="modal"
+            data-bs-target="#staticBackdrop"
+            style="display: none;"
+          >
+            <!-- Launch static backdrop modal -->
+          </button>
+
+          <!-- Modal -->
+          <div
+            class="modal fade"
+            id="staticBackdrop"
+            data-bs-backdrop="static"
+            data-bs-keyboard="false"
+            tabindex="-1"
+            aria-labelledby="staticBackdropLabel"
+            aria-hidden="true"
+          >
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="staticBackdropLabel">
+                    Modal title
+                  </h5>
+                  <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="modal"
+                    aria-label="Close"
+                  ></button>
+                </div>
+                <div class="modal-body">A new user has been created</div>
+                <div class="modal-footer">
+                  <button
+                    type="button"
+                    class="btn btn-secondary"
+                    data-bs-dismiss="modal"
+                  >
+                    Close
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -99,23 +148,50 @@
 </style>
 <script>
 import Navbar from "@/examples/PageLayout/Navbar.vue";
-import ArgonCheckbox from "@/components/ArgonCheckbox.vue";
-import ArgonButton from "@/components/ArgonButton.vue";
+import axios from "axios";
+
 const body = document.getElementsByTagName("body")[0];
 
 export default {
   name: "signin",
   components: {
     Navbar,
-    ArgonCheckbox,
-    ArgonButton,
   },
   data() {
     return {
       Name: "",
       Phone: "",
       Password: "",
+      email: "",
+      http: "http://15.237.7.54:8000/api/",
     };
+  },
+  methods: {
+    myFunction() {
+      console.log(document.getElementById("myCheck"));
+      document.getElementById("myCheck").click();
+    },
+    signUp() {
+      const options = {
+        headers: {
+          "content-type":
+            "multipart/form-data; boundary=<calculated when request is sent>",
+        },
+      };
+      const data = {
+        mobile: this.Phone,
+        password: this.Password,
+        name: this.Name,
+        email: this.email,
+        balance: 10000,
+        type: 1,
+      };
+
+      axios.post(`${this.http}createuser/`, data, options).then((res) => {
+        console.log(res);
+        this.myFunction();
+      });
+    },
   },
   created() {
     this.$store.state.hideConfigButton = true;

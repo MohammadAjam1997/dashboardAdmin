@@ -44,15 +44,19 @@
                         placeholder="Password"
                         aria-label="default input example"
                       />
-                      {{ Phone }}
-                    </div>
-                    <argon-switch id="rememberMe">Remember me</argon-switch>
-
-                    <div class="text-center">
-                      <button @click="signIn()">Sign in</button>
                     </div>
                   </form>
                 </div>
+                <div class="d-flex justify-content-center">
+                  <button
+                    @click="signIn()"
+                    type="button"
+                    class="btn btn-success px-5"
+                  >
+                    Sign in
+                  </button>
+                </div>
+
                 <div class="px-1 pt-0 text-center card-footer px-lg-2">
                   <p class="mx-auto mb-4 text-sm">
                     Don't have an account?
@@ -63,7 +67,42 @@
                 </div>
               </div>
             </div>
-            <button @click="signIn()">Sign in</button>
+            <div
+              class="modal fade"
+              id="staticBackdrop"
+              data-bs-backdrop="static"
+              data-bs-keyboard="false"
+              tabindex="-1"
+              aria-labelledby="staticBackdropLabel"
+              aria-hidden="true"
+            >
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">
+                      Modal title
+                    </h5>
+                    <button
+                      type="button"
+                      class="btn-close"
+                      data-bs-dismiss="modal"
+                      aria-label="Close"
+                    ></button>
+                  </div>
+                  <div class="modal-body">Success Log In</div>
+                  <div class="modal-footer">
+                    <button
+                      type="button"
+                      class="btn btn-secondary"
+                      data-bs-dismiss="modal"
+                    >
+                      Close
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- <button @click="signIn()">Sign in</button> -->
 
             <div
               class="top-0 my-auto text-center col-6 d-lg-flex d-none h-100 pe-0 position-absolute end-0 justify-content-center flex-column"
@@ -92,55 +131,96 @@
       </div>
     </section>
   </main>
+  <button
+    id="myCheck"
+    style="display: none"
+    type="button"
+    class="btn btn-primary"
+    data-bs-toggle="modal"
+    data-bs-target="#exampleModal"
+  ></button>
+
+  <!-- Modal -->
+  <div
+    class="modal fade"
+    id="exampleModal"
+    tabindex="-1"
+    aria-labelledby="exampleModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="modal-body">LogIn Success</div>
+        <div class="modal-footer">
+         <router-link to="/dashboard-default">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+            
+          >
+            Ok
+          </button>
+        </router-link>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
 import Navbar from "@/examples/PageLayout/Navbar.vue";
-import ArgonSwitch from "@/components/ArgonSwitch.vue";
-// import axios from "axios";
+import axios from "axios";
+import { mapActions } from "vuex";
+
 const body = document.getElementsByTagName("body")[0];
 
 export default {
   name: "signin",
   components: {
     Navbar,
-    ArgonSwitch,
   },
   data() {
     return {
       Phone: "",
       Password: "",
+      http: "http://15.237.7.54:8000/api/",
     };
   },
 
   methods: {
+    ...mapActions(["DataOflogin"]),
+    myFunction() {
+      console.log(document.getElementById("myCheck"));
+      document.getElementById("myCheck").click();
+    },
     signIn() {
-      const data = { mobile: "963993744264", password: "08112" };
-
-      // axios
-      //   .post("http://15.237.7.54:8000/api/login/",h, data)
-      //   .then((res) => {
-      //     console.log(res);
-      //   });
-
-      fetch("http://15.237.7.54:8000/api/login/", {
-        method: "POST", // or 'PUT'
+      const options = {
         headers: {
-          "Content-Type": "application/json",
-          "Access-Control-Allow-Credentials": "true",
+          "content-type":
+            "multipart/form-data; boundary=<calculated when request is sent>",
         },
-        body: JSON.stringify(data),
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          console.log("Success:", data);
-        })
-        .catch((error) => {
-          console.error("Error:", error);
-        });
+      };
+      const data = { mobile: this.Phone, password: this.Password };
+      axios.post(`${this.http}login/`, data, options).then((res) => {
+        this.DataOflogin(res.data);
+        this.myFunction();
+      });
     },
   },
   created() {
+    // axios.get(`${this.http}history?pk=1`).then((res) => {
+    //   console.log(res);
+    // });
     this.$store.state.hideConfigButton = true;
     this.$store.state.showNavbar = false;
     this.$store.state.showSidenav = false;
@@ -156,3 +236,8 @@ export default {
   },
 };
 </script>
+<style scoped>
+.btn-success {
+  width: 75%;
+}
+</style>

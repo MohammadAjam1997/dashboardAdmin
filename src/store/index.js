@@ -16,11 +16,15 @@ export default createStore({
     showNavbar: true,
     showFooter: true,
     showMain: true,
-    layout: "default"
+    layout: "default",
+    DataOflogin: "",
   },
   mutations: {
     toggleConfigurator(state) {
       state.showConfig = !state.showConfig;
+    },
+    DataOflogin(state, payload) {
+      state.DataOflogin = payload;
     },
     navbarMinimize(state) {
       const sidenav_show = document.querySelector(".g-sidenav-show");
@@ -44,12 +48,20 @@ export default createStore({
       } else {
         state.isNavFixed = false;
       }
-    }
+    },
   },
   actions: {
+    DataOflogin({ commit }, payload) {
+      commit("DataOflogin", payload);
+    },
     toggleSidebarColor({ commit }, payload) {
+      console.log(payload);
       commit("sidebarType", payload);
-    }
+    },
   },
-  getters: {}
+  getters: {
+    getDataOflogin(state) {
+      return state.DataOflogin;
+    },
+  },
 });
